@@ -39,20 +39,26 @@ def normalize(X_all, X_test):
 
 def train(X_all, Y_all):
 
+    # TODO, 1
     # Define model arch
     feat_dims = X_all.shape[1]
     model = Sequential()
     model.add(Dense(input_dim = feat_dims, units = 1, use_bias = True))
     model.add(Activation('sigmoid'))
 
-    # TODO, diff optim
-    sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+    # TODO, 2
+    # Define optimizer
+    #ada = optimizers.Adagrad(lr = 0.001)
+    sgd = optimizers.SGD(lr=0.001, decay=1e-6, momentum=0.9, nesterov=True)
 
+    # TODO, 3
     # Compile model
     model.compile(loss = 'binary_crossentropy',
                   optimizer = sgd,
                   metrics = ['accuracy'])
 
+    # TODO, 4
+    # Start training
     model.fit(X_all, Y_all, batch_size = 32, epochs = 20, validation_split = 0.1, shuffle = True)
     model.save('./logistic_params/logistic.h5')
 
@@ -71,7 +77,7 @@ def main(opts):
                                              opts.test_label_path)
 
     # Normalization
-    # X_all, X_test = normalize(X_all, X_test)
+    X_all, X_test = normalize(X_all, X_test)
 
     # To train or to infer
     if opts.train:
