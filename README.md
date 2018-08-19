@@ -1,9 +1,9 @@
 # AI School Logistic Regression
 
-## Usage
+### Usage
 
-### Train
+#### Train
 `python main.py --train`
 
-### Infer
+#### Infer
 `python main.py --infer`
