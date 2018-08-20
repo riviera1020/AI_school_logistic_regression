@@ -37,12 +37,12 @@ def normalize(X_all, X_test):
     X_test = X_train_test_normed[X_all.shape[0]:]
     return X_all, X_test
 
-def train(X_all, Y_all):
+def train(X_train, Y_train):
 
     # TODO, 1
     # Define model arch
     model = Sequential()
-    feat_dims = X_all.shape[1]
+    feat_dims = X_train.shape[1]
     model.add(Dense(input_dim = feat_dims, units = 1, use_bias = True))
     model.add(Activation('sigmoid'))
 
@@ -58,9 +58,8 @@ def train(X_all, Y_all):
 
     # TODO, 4
     # Start training
-    model.fit(X_all, Y_all, epochs = 10)
+    model.fit(X_train, Y_train, epochs = 10)
     model.save('./logistic_params/logistic.h5')
-    #sgd = optimizers.SGD(lr=0.001)
 
 def infer(X_test, Y_test):
 
@@ -73,17 +72,17 @@ def infer(X_test, Y_test):
 
 def main(opts):
     # Load feature and label
-    X_all, Y_all, X_test, Y_test = load_data(opts.train_data_path,
-                                             opts.train_label_path,
-                                             opts.test_data_path,
-                                             opts.test_label_path)
+    X_train, Y_train, X_test, Y_test = load_data(opts.train_data_path,
+                                                 opts.train_label_path,
+                                                 opts.test_data_path,
+                                                 opts.test_label_path)
 
     # Normalization
-    X_all, X_test = normalize(X_all, X_test)
+    X_train, X_test = normalize(X_train, X_test)
 
     # To train or to infer
     if opts.train:
-        train(X_all, Y_all)
+        train(X_train, Y_train)
     elif opts.infer:
         infer(X_test, Y_test)
     else:
